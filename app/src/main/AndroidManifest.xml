@@ -10,9 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Database_GevYam_EX_3">
         <activity
-            android:name=".WorkerDetails"
-            android:windowSoftInputMode="adjustPan"
+            android:name=".AddCompany"
             android:exported="false" />
+        <activity
+            android:name=".WorkerEdit"
+            android:exported="false" />
+        <activity
+            android:name=".WorkerDetails"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".AddWorker"
             android:exported="false" />

@@ -97,7 +97,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:onClick="DetailsWorker"
-                android:text="SHOW/Update"
+                android:text="SHOW/EDIT"
                 app:backgroundTint="#2196F3" />
 
             <Space
@@ -136,6 +136,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
+                android:onClick="AddCompany"
                 android:text="ADD "
                 app:backgroundTint="#75B32E" />
 
@@ -149,7 +150,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:text="SHOW/update"
+                android:onClick="DetailsCompany"
+                android:text="SHOW/EDIT"
                 app:backgroundTint="#75B32E" />
 
             <Space

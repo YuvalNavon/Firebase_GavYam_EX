@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_add_company.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_add_worker.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_worker_details.xml" value="0.25" />
+        <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_worker_edit.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

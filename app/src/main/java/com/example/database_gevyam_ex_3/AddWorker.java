@@ -60,6 +60,8 @@ HelperDB hlp;
                 id.setText("");
                 company.setText("");
                 phone.setText("");
+                Toast toast = Toast.makeText(getApplicationContext(), "Worker added successfully!", Toast.LENGTH_LONG);
+                toast.show();
 
             }
             else{

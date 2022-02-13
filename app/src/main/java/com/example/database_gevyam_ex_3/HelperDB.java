@@ -37,8 +37,8 @@ public class HelperDB extends SQLiteOpenHelper {
 
         strCreate="CREATE TABLE "+TABLE_COMPANY;
         strCreate+=" ("+COMPANY_ID+" INTEGER PRIMARY KEY,";
-        strCreate+=" "+TAX_COMPANY+" TEXT,";
         strCreate+=" "+NAME+" TEXT,";
+        strCreate+=" "+TAX_COMPANY+" TEXT,";
         strCreate+=" "+MAIN_NUMBER+" TEXT,";
         strCreate+=" "+SECONDARY_NUMBER+" TEXT,";
         strCreate+=" "+ COMPANY_ACTIVE+" INTEGER";

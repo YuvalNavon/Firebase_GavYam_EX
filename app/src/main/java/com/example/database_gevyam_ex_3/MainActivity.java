@@ -26,5 +26,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(si);
     }
 
+    public void AddCompany(View view){
+        Intent si = new Intent(this,AddCompany.class);
+        startActivity(si);
+    }
+    public void DetailsCompany(View view){
+        Intent si = new Intent(this,WorkerDetails.class);
+        startActivity(si);
+    }
+
 
 }
