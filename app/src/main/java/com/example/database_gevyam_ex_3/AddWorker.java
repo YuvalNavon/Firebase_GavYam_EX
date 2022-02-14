@@ -76,7 +76,7 @@ HelperDB hlp;
         return true;
     }
 
-    public void Back(View view){
+    public void goBack(View view){
         finish();
     }
 }

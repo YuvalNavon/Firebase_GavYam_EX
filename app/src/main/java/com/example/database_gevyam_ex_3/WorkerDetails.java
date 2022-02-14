@@ -121,6 +121,9 @@ ArrayAdapter adp;
     }
 
 
+    public void goBack(View view){
+        finish();
+    }
 
 
 

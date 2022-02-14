@@ -148,11 +148,11 @@
                 android:layout_weight="0.25" />
 
             <Button
-                android:id="@+id/Back"
+                android:id="@+id/Backbtn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:onClick="Back"
+                android:onClick="goBack"
                 android:text="back" />
 
             <Space

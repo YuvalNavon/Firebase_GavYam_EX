@@ -65,7 +65,7 @@ public class AddCompany extends AppCompatActivity {
     }
 
 
-    public void Back(View view){
+    public void goBack(View view){
         finish();
     }
 

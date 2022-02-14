@@ -205,7 +205,7 @@ public class WorkerEdit extends AppCompatActivity {
         edit = 0;
     }
 
-    public void Back(View view){
+    public void goBack(View view){
         finish();
     }
 
