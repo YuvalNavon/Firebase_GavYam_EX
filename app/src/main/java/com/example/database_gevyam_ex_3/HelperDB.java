@@ -31,7 +31,7 @@ public class HelperDB extends SQLiteOpenHelper {
         strCreate+=" "+WORK_COMPANY+" TEXT,";
         strCreate+=" "+ID_NUMBER+" TEXT,";
         strCreate+=" "+PHONE_NUMBER+" TEXT,";
-        strCreate+=" "+ WORKER_ACTIVE+" INTEGER";
+        strCreate+=" "+ WORKER_ACTIVE+" TEXT";
         strCreate+=");";
         db.execSQL(strCreate);
 
@@ -41,7 +41,7 @@ public class HelperDB extends SQLiteOpenHelper {
         strCreate+=" "+TAX_COMPANY+" TEXT,";
         strCreate+=" "+MAIN_NUMBER+" TEXT,";
         strCreate+=" "+SECONDARY_NUMBER+" TEXT,";
-        strCreate+=" "+ COMPANY_ACTIVE+" INTEGER";
+        strCreate+=" "+ COMPANY_ACTIVE+" TEXT";
         strCreate+=");";
         db.execSQL(strCreate);
 
@@ -60,8 +60,10 @@ public class HelperDB extends SQLiteOpenHelper {
         strCreate+=" "+DATE+" TEXT,";
         strCreate+=" "+HOUR+" TEXT,";
         strCreate+=" "+WORKER+" TEXT,";
+        strCreate+=" "+WORKER_NAME+" TEXT,";
         strCreate+=" "+MEAL+" TEXT,";
-        strCreate+=" "+COMPANY+" TEXT";
+        strCreate+=" "+COMPANY+" TEXT,";
+        strCreate+=" "+COMPANY_NAME+" TEXT";
         strCreate+= ");";
         db.execSQL(strCreate);
 

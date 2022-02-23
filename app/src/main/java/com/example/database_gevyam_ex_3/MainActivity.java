@@ -31,7 +31,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(si);
     }
     public void DetailsCompany(View view){
-        Intent si = new Intent(this,WorkerDetails.class);
+        Intent si = new Intent(this,CompanyDetails.class);
+        startActivity(si);
+    }
+
+    public void MakeOrder(View view){
+        Intent si = new Intent(this,MakeOrder.class);
+        startActivity(si);
+    }
+
+    public void OrderHistory(View view){
+        Intent si = new Intent(this,OrderHistory.class);
         startActivity(si);
     }
 

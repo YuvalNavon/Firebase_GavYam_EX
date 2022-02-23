@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WorkerEdit">
+    tools:context=".CompanyEdit">
 
     <Space
         android:layout_width="0dp"
@@ -23,16 +23,16 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textView9"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="First name:"
+            android:text="Company name:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/FirstName2"
+            android:id="@+id/companyName"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -42,92 +42,67 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textView10"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Last name:"
+            android:text="Tax company:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/LastName2"
+            android:id="@+id/taxCompany"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:ems="10"
             android:gravity="center"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textView11"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="ID number:"
+            android:text="Main phone number:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/ID2"
+            android:id="@+id/mainNumber"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:ems="10"
             android:gravity="center"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/textView12"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Company:"
+            android:text="Secondary phone number:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/Company2"
+            android:id="@+id/seco"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:ems="10"
             android:gravity="center"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Phone Number:"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/PhoneNumber2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:ems="10"
-            android:gravity="center"
-            android:inputType="phone"
-            android:textSize="20sp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <Switch
-            android:id="@+id/activeWorker"
+            android:id="@+id/activeCompany"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:checked="true"
             android:gravity="center"
             android:text="ACTIVE"
             android:textSize="20sp" />
@@ -149,13 +124,13 @@
                 android:layout_weight="0.25" />
 
             <Button
-                android:id="@+id/BackbtnWorkerEdit"
+                android:id="@+id/BackbtnCompanyEdit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="goBack"
-                android:text="back"
-                app:backgroundTint="#03A9F4" />
+                android:text="Back"
+                app:backgroundTint="#DAC407" />
 
             <Space
                 android:layout_width="0dp"
@@ -169,30 +144,28 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/EditConfirmWorker"
+                    android:id="@+id/EditConfirmCompany"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:onClick="EditConfirm"
-                    android:text="Confirm"
-                    app:backgroundTint="#03A9F4" />
+                    android:text="Edit"
+                    app:backgroundTint="#DAC407" />
 
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <Button
-                    android:id="@+id/CancelWorker"
+                    android:id="@+id/CancelCompany"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:onClick="Cancel"
                     android:text="Cancel"
-                    app:backgroundTint="#03A9F4" />
-
+                    app:backgroundTint="#DAC407" />
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 
     <Space

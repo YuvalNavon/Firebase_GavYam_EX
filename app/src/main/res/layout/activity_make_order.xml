@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddWorker" >
+    android:gravity="center"
+    tools:context=".MakeOrder">
 
     <Space
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <LinearLayout
@@ -20,27 +21,79 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="0.5" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/textView18"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:fontFamily="@font/chelsea_market"
             android:gravity="center"
-            android:text="Please add a worker!"
-            android:textColor="#03A9F4"
+            android:text="Please make an order!"
+            android:textColor="#4CAF50"
             android:textSize="20sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/cardID"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Card ID"
+                android:inputType="number" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Supplying company:"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/companychoosespinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
+
         <EditText
-            android:id="@+id/FirstName"
+            android:id="@+id/appetizer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:ems="10"
             android:gravity="center"
-            android:hint="First name"
+            android:hint="Appetizer"
             android:inputType="textPersonName" />
 
         <Space
@@ -49,13 +102,13 @@
             android:layout_weight="1" />
 
         <EditText
-            android:id="@+id/LastName"
+            android:id="@+id/mainCourse"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:ems="10"
             android:gravity="center"
-            android:hint="Last name"
+            android:hint="Main course"
             android:inputType="textPersonName" />
 
         <Space
@@ -64,28 +117,13 @@
             android:layout_weight="1" />
 
         <EditText
-            android:id="@+id/ID"
+            android:id="@+id/extra"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:ems="10"
             android:gravity="center"
-            android:hint="ID number"
-            android:inputType="number" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <EditText
-            android:id="@+id/Company"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:ems="10"
-            android:gravity="center"
-            android:hint="Company"
+            android:hint="Extra"
             android:inputType="textPersonName" />
 
         <Space
@@ -94,14 +132,29 @@
             android:layout_weight="1" />
 
         <EditText
-            android:id="@+id/PhoneNumber"
+            android:id="@+id/dessert"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:ems="10"
             android:gravity="center"
-            android:hint="Phone number"
-            android:inputType="phone" />
+            android:hint="Dessert"
+            android:inputType="textPersonName" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/drink"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Drink"
+            android:inputType="textPersonName" />
 
         <Space
             android:layout_width="match_parent"
@@ -111,52 +164,50 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/clear"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:onClick="clear"
-                android:text="clear"
-                app:backgroundTint="#03A9F4" />
+                android:text="Clear"
+                app:backgroundTint="#4CAF50" />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="0.5" />
 
             <Button
-                android:id="@+id/add"
+                android:id="@+id/button3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:onClick="Add"
-                android:text="add"
-                app:backgroundTint="#03A9F4" />
-
+                android:text="Confirm"
+                app:backgroundTint="#4CAF50" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/backbtnAddWorkers"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:onClick="goBack"
-            android:text="back"
-            app:backgroundTint="#03A9F4" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5" />
 
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:onClick="goBack"
+            android:text="back"
+            app:backgroundTint="#4CAF50" />
+
     </LinearLayout>
 
     <Space
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 </LinearLayout>

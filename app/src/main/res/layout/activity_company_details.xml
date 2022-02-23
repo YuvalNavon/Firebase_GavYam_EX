@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WorkerDetails">
+    tools:context=".CompanyDetails">
 
     <Space
         android:layout_width="0dp"
@@ -21,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
             android:orientation="horizontal">
 
             <Space
@@ -30,14 +29,14 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/WorkerDetailsTutorial"
+                android:id="@+id/CompanyDetailsTutorial"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_weight="9"
                 android:fontFamily="sans-serif-black"
                 android:gravity="center"
-                android:text="@string/DetailWorkerTutorial"
-                android:textColor="#2196F3"
+                android:text="@string/DetailCompanyTutorial"
+                android:textColor="#D1A72A"
                 android:textSize="16sp" />
 
             <Space
@@ -53,12 +52,13 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="filterSelect"
                 android:text="FILTER"
-                app:backgroundTint="#03A9F4" />
+                app:backgroundTint="#DAC407" />
 
             <Space
                 android:layout_width="0dp"
@@ -66,10 +66,11 @@
                 android:layout_weight="0.25" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/textView14"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.75"
+                android:foregroundGravity="center"
                 android:gravity="center"
                 android:text="Sort by:"
                 android:textColor="#000000"
@@ -81,7 +82,7 @@
                 android:layout_weight="0.01" />
 
             <Spinner
-                android:id="@+id/sortSpinnerWorker"
+                android:id="@+id/sortSpinnerCompany"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5" />
@@ -99,12 +100,11 @@
             android:orientation="horizontal">
 
             <ListView
-                android:id="@+id/listOfWorkers"
+                android:id="@+id/listOfCompanies"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             </ListView>
-
         </LinearLayout>
 
         <Space
@@ -121,23 +121,21 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.25" />
+                android:layout_weight="1" />
 
             <Button
-                android:id="@+id/BackbtnWorkerEdit"
+                android:id="@+id/BackbtnCompany"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="5"
                 android:onClick="goBack"
-                android:text="back"
-                app:backgroundTint="#03A9F4"
-                app:rippleColor="#2196F3" />
+                android:text="BACK"
+                app:backgroundTint="#DAC407" />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.25" />
-
+                android:layout_weight="1" />
         </LinearLayout>
 
     </LinearLayout>

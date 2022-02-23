@@ -34,15 +34,22 @@ public class AddCompany extends AppCompatActivity {
         main_st = main.getText().toString();
         secondary_st = secondary.getText().toString();
 
-
-        if (!name_st.isEmpty() && !tax_st.isEmpty() && !main_st.isEmpty() && !secondary_st.isEmpty())
+        if (!phoneCheck(main_st)) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Invalid MAIN phone number!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        if (!phoneCheck(secondary_st)) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Invalid SECONDARY phone number!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        if (!name_st.isEmpty() && !tax_st.isEmpty() && !main_st.isEmpty() && !secondary_st.isEmpty() && phoneCheck(main_st) && phoneCheck(secondary_st))
             {
                 cv = new ContentValues();
                 cv.put(Company.NAME, name_st);
                 cv.put(Company.TAX_COMPANY, tax_st);
                 cv.put(Company.MAIN_NUMBER, main_st);
                 cv.put(Company.SECONDARY_NUMBER, secondary_st);
-                cv.put(Company.COMPANY_ACTIVE, 1);
+                cv.put(Company.COMPANY_ACTIVE, "1");
 
 
                 db = hlp.getWritableDatabase();
@@ -57,11 +64,35 @@ public class AddCompany extends AppCompatActivity {
 
             }
             else{
-                Toast toast = Toast.makeText(getApplicationContext(), "Please fill ALL fields!", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getApplicationContext(), "Please fill ALL fields correctly!", Toast.LENGTH_SHORT);
                 toast.show();
             }
 
 
+    }
+
+    public static boolean phoneCheck(String phone){
+        if (phone.length()!= 10){
+            return false;
+        }
+        String kidomet = phone.substring(0,3);
+        System.out.println(kidomet);
+        if (!kidomet.equals("050") && !kidomet.equals("051") && !kidomet.equals("052") && !kidomet.equals("053") && !kidomet.equals("054") && !kidomet.equals("055")
+                && !kidomet.equals("056") && !kidomet.equals("057") && !kidomet.equals("058")){
+            return false;
+        }
+        return true;
+
+    }
+    public void clear(View view){
+        name.setText("");
+        tax.setText("");
+        main.setText("");
+        secondary.setText("");
+        name_st = "";
+        tax_st = "";
+        main_st = "";
+        secondary_st ="";
     }
 
 

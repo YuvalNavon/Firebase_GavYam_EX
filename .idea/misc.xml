@@ -3,20 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Yuval/AndroidStudioProjects/GevYamCheck/app/src/main/res/layout/activity_add_company.xml" value="0.16770833333333332" />
-        <entry key="..\:/Users/Yuval/AndroidStudioProjects/GevYamCheck/app/src/main/res/layout/activity_add_worker.xml" value="0.16770833333333332" />
-        <entry key="..\:/Users/Yuval/AndroidStudioProjects/GevYamCheck/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/Yuval/AndroidStudioProjects/GevYamCheck/app/src/main/res/layout/activity_worker_details.xml" value="0.366079703429101" />
-        <entry key="..\:/Users/Yuval/AndroidStudioProjects/GevYamCheck/app/src/main/res/layout/activity_worker_edit.xml" value="0.16770833333333332" />
+        <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.2975" />
         <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_add_company.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_add_worker.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_company_details.xml" value="0.33" />
+        <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_company_edit.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_worker_details.xml" value="0.25" />
+        <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_make_order.xml" value="0.34057971014492755" />
+        <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_order_history.xml" value="0.33" />
+        <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_worker_details.xml" value="0.33" />
         <entry key="..\:/Users/bensv/AndroidStudioProjects/Database_GevYam_EX_3/app/src/main/res/layout/activity_worker_edit.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

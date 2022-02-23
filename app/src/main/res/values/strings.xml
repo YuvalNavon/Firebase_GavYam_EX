@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Database_GevYam_EX_3</string>
+    <string name="DetailWorkerTutorial">Select a worker to VIEW and EDIT their full details!</string>
+    <string name="DetailCompanyTutorial">Select a company to VIEW and EDIT its full details!</string>
+    <string name="OrderHistoryTutorial">Select an order to VIEW its full details!</string>
+
+
 </resources>
