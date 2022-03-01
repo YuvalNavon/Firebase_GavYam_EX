@@ -1,3 +1,13 @@
+
+/**
+ * @author		Yuval Navon <yuvalnavon8@gmail.com>
+ * @version	    1
+ * @since		1/3/2022
+ *  Used to create and update the 4 different tables - Worker, Company, Meal and Hazmana.
+ */
+
+
+
 package com.example.database_gevyam_ex_3;
 
 import android.content.Context;
@@ -21,6 +31,14 @@ public class HelperDB extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
+    /**
+     * Creates the 4 tables.
+     * <p>
+     *
+     * @param db - the database made using the SQLiteDatabase class.
+     * @return	None
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -73,6 +91,16 @@ public class HelperDB extends SQLiteOpenHelper {
 
     }
 
+
+    /**
+     * Deletes the 4 tables and recreates them.
+     * <p>
+     *
+     * @param db - the database made using the SQLiteDatabase class.
+     *        oldVer - the older version of the database containing the 4 tables.
+     *        newVer - the newer version of the database containing the 4 tables.
+     * @return	None
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVer, int newVer) {
 

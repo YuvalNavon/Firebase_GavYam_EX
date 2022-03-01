@@ -1,11 +1,22 @@
+
+/**
+ * @author		Yuval Navon <yuvalnavon8@gmail.com>
+ * @version 	1
+ * @since		1/3/2022
+ * This activity is used to make new orders and add them to the database.
+ */
+
 package com.example.database_gevyam_ex_3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,7 +66,13 @@ public class MakeOrder extends AppCompatActivity implements AdapterView.OnItemSe
 
     }
 
-
+    /**
+     * Saves the inputted information of the new order, verifies it and if it is valid, it adds the order to the database.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
     public void Add(View view)
     {
         cardID_st = cardID.getText().toString();
@@ -65,7 +82,7 @@ public class MakeOrder extends AppCompatActivity implements AdapterView.OnItemSe
         dessert_st = dessert.getText().toString();
         drink_st = drink.getText().toString();
 
-        allWorkersStatus();
+        allActiveWorkers();
         if (!cardID_st.isEmpty()){
             if (Integer.parseInt(cardID_st)>tblWorkerActive.size() || Integer.parseInt(cardID_st)<=0){
                 Toast toast = Toast.makeText(getApplicationContext(), "NONEXISTENT worker", Toast.LENGTH_LONG);
@@ -135,6 +152,14 @@ public class MakeOrder extends AppCompatActivity implements AdapterView.OnItemSe
 
     }
 
+
+    /**
+     * Clears the EditText fields.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
     public void clear(View view){
         companyChoose.setSelection(0);
         cardID.setText("");
@@ -152,6 +177,25 @@ public class MakeOrder extends AppCompatActivity implements AdapterView.OnItemSe
         drink_st = "";
     }
 
+    /**
+     * Closes the activity.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
+    public void goBack(View view){
+        finish();
+    }
+
+
+    /**
+     * Reads the Company table from the database.
+     * <p>
+     *
+     * @param	cursr - the cursor that was made for the reading of the database
+     * @return	None
+     */
     public void ReaderCompany(Cursor cursr){
         db=hlp.getWritableDatabase();
         tblCompanyNames = new ArrayList<>();
@@ -170,6 +214,13 @@ public class MakeOrder extends AppCompatActivity implements AdapterView.OnItemSe
         db.close();
     }
 
+
+    /**
+     * Makes a global ArrayList of all active companies from the Company table.
+     * <p>
+     *
+     * @return	tblCompanyNames - ArrayList<String> of all active companies.
+     */
     public ArrayList<String> allActiveCompanies(){
         db=hlp.getReadableDatabase();
         Cursor crsr = db.query(Company.TABLE_COMPANY, null, Company.COMPANY_ACTIVE+ "=?", new String[]{"1"}, null,null, null, null);
@@ -180,6 +231,13 @@ public class MakeOrder extends AppCompatActivity implements AdapterView.OnItemSe
 
     }
 
+    /**
+     * Reads the Worker table from the database.
+     * <p>
+     *
+     * @param	cursr - the cursor that was made for the reading of the database
+     * @return	None
+     */
     public void ReaderWorker(Cursor cursr){
         db=hlp.getWritableDatabase();
         tblWorkerActive = new ArrayList<>();
@@ -198,7 +256,14 @@ public class MakeOrder extends AppCompatActivity implements AdapterView.OnItemSe
         db.close();
     }
 
-    public void allWorkersStatus(){
+
+    /**
+     * makes a global ArrayList of all active workers from the Worker table.
+     * <p>
+     *
+     * @return	None
+     */
+    public void allActiveWorkers(){
         db=hlp.getReadableDatabase();
         Cursor crsr = db.query(Worker.TABLE_WORKER, null, null, null, null,null, null, null);
         ReaderWorker(crsr);
@@ -208,22 +273,81 @@ public class MakeOrder extends AppCompatActivity implements AdapterView.OnItemSe
 
     }
 
-    public void goBack(View view){
-        finish();
-    }
-
-
+    /**
+     * Saves the company that the user chose from the Spinner.
+     * <p>
+     *
+     * @param	adapterView - the Spinner that was clicked
+     *          view - the item that was clicked
+     *          i - the position of the item that was clicked in the Adapter
+     *          l - the row that was clicked in the Spinner
+     * @return	None
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         companyID_st = tblkeyCompanies.get(i);
-        System.out.println(companyID_st);
         spinnerselect = i;
 
 
     }
 
+
+    /**
+     * Mandatory method, isn't used
+     * <p>
+     *
+     * @param	adapterView - the Spinner that was clicked
+     * @return	None
+     */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    /**
+     * Creates the Options Menu, allowing the user to navigate to the Home screen, Credits screen
+     * or the OrderHistory activity.
+     * <p>
+     *
+     * @param	menu - the Menu that is created
+     * @return	boolean true - mandatory
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        menu.add(0, 0, 0, "Order History");
+        return true;
+    }
+
+    /**
+     * Starts the MainActivity, CreditsScreen activity, or OrderHistory activity according to the
+     * user's choice.
+     * <p>
+     *
+     * @param	item - the MenuItem that is clicked.
+     * @return	boolean true - mandatory
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        String st = item.getTitle().toString();
+        if (st.equals("Order History")){
+            Intent si = new Intent(this, OrderHistory.class);
+            startActivity(si);
+
+        }
+        if (st.equals("Home Screen")){
+            Intent si = new Intent(this, MainActivity.class);
+            startActivity(si);
+
+        }
+
+        if (st.equals("Credits Screen")){
+            Intent si = new Intent(this, CreditsScreen.class);
+            startActivity(si);
+
+        }
+
+        return true;
+    }
+
 }

@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Database_GevYam_EX_3">
         <activity
+            android:name=".CreditsScreen"
+            android:exported="false" />
+        <activity
             android:name=".OrderHistory"
             android:exported="false" />
         <activity

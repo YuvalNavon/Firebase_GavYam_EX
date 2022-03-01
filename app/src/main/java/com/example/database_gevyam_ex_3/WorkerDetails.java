@@ -1,3 +1,13 @@
+
+/**
+ * @author		Yuval Navon <yuvalnavon8@gmail.com>
+ * @version	    1
+ * @since		1/3/2022
+ * This activity is used to show the main details of all workers, and allows the user to edit each
+ * worker by clicking on them.
+ */
+
+
 package com.example.database_gevyam_ex_3;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +18,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -138,6 +150,37 @@ ArrayAdapter adp;
 
     }
 
+
+    /**
+     * Shows the filter AlertDialog.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
+    public void filterSelect(View view){
+        adFilter.show();
+    }
+
+
+    /**
+     * Closes the activity.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
+    public void goBack(View view){
+        finish();
+    }
+
+
+    /**
+     * Makes a global ArrayList that contains all of the workers in reverse order (last added come first).
+     * <p>
+     *
+     * @return	tbl2 - ArrayList<String> of all workers in reverse order.
+     */
     public ArrayList<String> reverse_tbl(){
         tbl2 = new ArrayList<>();
         for (int i = tbl.size()-1; i>=0; i--){
@@ -146,6 +189,15 @@ ArrayAdapter adp;
         return tbl2;
     }
 
+    /**
+     * Reads the Worker database and saves each worker's full information in a global
+     * ArrayList<String[]> called tblfull. the information that is presented to the user is saved in
+     * a global ArrayList<String> tbl.
+     * <p>
+     *
+     * @param	cursr - the cursor that was made for the reading of the database
+     * @return	None
+     */
     public void Reader(Cursor cursr){
         db=hlp.getWritableDatabase();
         tbl = new ArrayList<>();
@@ -189,6 +241,16 @@ ArrayAdapter adp;
 
 
 
+    /**
+     * Starts the EditWorker activity with the full information of the worker that the user selected.
+     * <p>
+     *
+     * @param	adapterView - the ListView that was clicked
+     *          view - the item that was clicked
+     *          i - the position of the item that was clicked in the Adapter
+     *          l - the row that was clicked in the ListView
+     * @return	None
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         String[] workerDetails;
@@ -211,15 +273,20 @@ ArrayAdapter adp;
     }
 
 
-    public void filterSelect(View view){
-        adFilter.show();
-    }
-
-    public void goBack(View view){
-        finish();
-    }
-
-
+    /**
+     * Sorts the list of workers according to the user's choice:
+     *  - By first added first.
+     *  - By last added first.
+     *  - By last name A-Z first.
+     *  - By last name Z-A first.
+     * <p>
+     *
+     * @param	adapterView - the Spinner that was clicked
+     *          view - the item that was clicked
+     *          i - the position of the item that was clicked in the Adapter
+     *          l - the row that was clicked in the Spinner
+     * @return	None
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String[] columns = null;
@@ -261,8 +328,64 @@ ArrayAdapter adp;
         db.close();
     }
 
+    /**
+     * Mandatory method, isn't used
+     * <p>
+     *
+     * @param	adapterView - the Spinner that was clicked
+     * @return	None
+     */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+
+    /**
+     * Creates the Options Menu, allowing the user to navigate to the Home screen, Credits screen
+     * or the AddWorker activity.
+     * <p>
+     *
+     * @param	menu - the Menu that is created
+     * @return	boolean true - mandatory
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        menu.add(0, 0, 0, "Add a New Worker!");
+        return true;
+    }
+
+    /**
+     * Starts the MainActivity, CreditsScreen activity, or AddWorker activity according to the
+     * user's choice.
+     * <p>
+     *
+     * @param	item - the MenuItem that is clicked.
+     * @return	boolean true - mandatory
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        String st = item.getTitle().toString();
+        if (st.equals("Add a New Worker!")){
+            Intent si = new Intent(this, AddWorker.class);
+            startActivity(si);
+
+        }
+        if (st.equals("Home Screen")){
+            Intent si = new Intent(this, MainActivity.class);
+            startActivity(si);
+
+        }
+
+        if (st.equals("Credits Screen")){
+            Intent si = new Intent(this, CreditsScreen.class);
+            startActivity(si);
+
+        }
+
+        return true;
+    }
+
+
 }

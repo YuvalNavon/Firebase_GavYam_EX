@@ -1,10 +1,22 @@
+
+/**
+ * @author		Yuval Navon <yuvalnavon8@gmail.com>
+ * @version	    1
+ * @since		1/3/2022
+ * This activity is used to show the full details of all orders.
+ */
+
+
 package com.example.database_gevyam_ex_3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -90,7 +102,39 @@ public class OrderHistory extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    /**
+     * Closes the activity.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
+    public void goBack(View view){
+        finish();
+    }
 
+
+    /**
+     * Makes a global ArrayList that contains all of the orders in reverse order (last added come first).
+     * <p>
+     *
+     * @return	tblrev - ArrayList<String> of all orders in reverse order.
+     */
+    public ArrayList<String> reverse_tbl(){
+        tblrev = new ArrayList<>();
+        for (int i = tbl.size()-1; i>=0; i--){
+            tblrev.add(tbl.get(i));
+        }
+        return tblrev;
+    }
+    /**
+     * gets the last name of the worker that is being checked during the reading of the
+     * Order table from the database.
+     * <p>
+     *
+     * @param	workerID -the KeyID of the worker that is being checked
+     * @return	worker_name - the last name of the worker that was checked.
+     */
     public String getWorkerName(String workerID){
         db=hlp.getWritableDatabase();
         Cursor cursr = db.query(Worker.TABLE_WORKER, null, null, null, null, null, null, null);
@@ -110,6 +154,14 @@ public class OrderHistory extends AppCompatActivity implements AdapterView.OnIte
         return worker_name;
     }
 
+    /**
+     * gets the name of the company that is being checked during the reading of the
+     * Order table from the database.
+     * <p>
+     *
+     * @param	companyID -the KeyID of the company that is being checked
+     * @return	company_name - the name of the company that was checked.
+     */
     public String getCompanyName(String companyID){
         db=hlp.getWritableDatabase();
         Cursor cursr = db.query(Company.TABLE_COMPANY, null, null, null, null, null, null, null);
@@ -128,6 +180,15 @@ public class OrderHistory extends AppCompatActivity implements AdapterView.OnIte
         db.close();
         return company_name;
     }
+
+    /**
+     * Reads the Meal table from the database and saves each meal's full information in a global
+     * ArrayList<String[]> called tblMeals.
+     * <p>
+     *
+     * @param	cursr - the cursor that was made for the reading of the database
+     * @return	None
+     */
     public void ReaderMeal(Cursor cursr){
         db=hlp.getWritableDatabase();
         int col_appetizer = cursr.getColumnIndex(Meal.APPETIZER);
@@ -144,20 +205,29 @@ public class OrderHistory extends AppCompatActivity implements AdapterView.OnIte
         tblMeals.add(new String[]{appetizer_st, mainCourse_st, extra_st, dessert_st, drink_st});
     }
 
+    /**
+     * Initilizes the cursor and calls the ReaderMeal function.
+     * <p>
+     *
+     * @param	mealID - the KeyID of the meal that is being added to tblMeals
+     * @return	None
+     */
     public void addToMeals(String mealID){
         db=hlp.getReadableDatabase();
         Cursor cursr = db.query(Meal.TABLE_MEAL, null, Meal.MEAL_ID +"=?", new String[]{mealID}, null, null, null, null);
         ReaderMeal(cursr);
     }
 
-    public ArrayList<String> reverse_tbl(){
-        tblrev = new ArrayList<>();
-        for (int i = tbl.size()-1; i>=0; i--){
-            tblrev.add(tbl.get(i));
-        }
-        return tblrev;
-    }
 
+    /**
+     * Reads the Order table from the database and saves each order's full information in a global
+     * ArrayList<String[]> called tblfull. the information that is presented to the user is saved in
+     * a global ArrayList<String> tbl.
+     * <p>
+     *
+     * @param	cursr - the cursor that was made for the reading of the database
+     * @return	None
+     */
     public void Reader(Cursor cursr){
         db=hlp.getWritableDatabase();
         tbl = new ArrayList<>();
@@ -181,10 +251,8 @@ public class OrderHistory extends AppCompatActivity implements AdapterView.OnIte
             workerlastname_st = getWorkerName(workerID_st);
             company_st = getCompanyName(companyID_st);
             String tmp = "" + key + ": " + workerlastname_st + ", " + company_st + ", " + date_st;
-            System.out.println(tmp);
             String[] tmp2 = new String[]{String.valueOf(key), workerID_st, companyID_st, mealID_st, date_st, hour_st} ;
             tbl.add(tmp);
-            System.out.println("TBL:" +  tbl);
             tblfull.add(tmp2);
             cursr.moveToNext();
         }
@@ -202,16 +270,16 @@ public class OrderHistory extends AppCompatActivity implements AdapterView.OnIte
 
 
 
-
-
-
-
-    public void goBack(View view){
-        finish();
-    }
-
-
-
+    /**
+     * Shows the full information of the order that the user selected.
+     * <p>
+     *
+     * @param	adapterView - the ListView that was clicked
+     *          view - the item that was clicked
+     *          i - the position of the item that was clicked in the Adapter
+     *          l - the row that was clicked in the ListView
+     * @return	None
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         order.setText("Order number - " + tblfull.get(i)[0]);
@@ -226,6 +294,23 @@ public class OrderHistory extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+
+    /**
+     * Sorts the list of companies according to the user's choice:
+     *  - By first added first.
+     *  - By last added first.
+     *  - By worker last name A-Z first.
+     *  - By worker last name Z-A first.
+     *  - By company name A-Z first.
+     *  - By company name Z-A first.
+     * <p>
+     *
+     * @param	adapterView - the Spinner that was clicked
+     *          view - the item that was clicked
+     *          i - the position of the item that was clicked in the Adapter
+     *          l - the row that was clicked in the Spinner
+     * @return	None
+     */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -271,8 +356,67 @@ public class OrderHistory extends AppCompatActivity implements AdapterView.OnIte
         db.close();
     }
 
+
+
+    /**
+     * Mandatory method, isn't used
+     * <p>
+     *
+     * @param	adapterView - the Spinner that was clicked
+     * @return	None
+     */
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+
+    /**
+     * Creates the Options Menu, allowing the user to navigate to the Home screen, Credits screen
+     * or the MakeOrder activity.
+     * <p>
+     *
+     * @param	menu - the Menu that is created
+     * @return	boolean true - mandatory
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        menu.add(0, 0, 0, "Make a New Order!");
+        return true;
+    }
+
+    /**
+     * Starts the MainActivity, CreditsScreen activity, or MakeOrder activity according to the
+     * user's choice.
+     * <p>
+     *
+     * @param	item - the MenuItem that is clicked.
+     * @return	boolean true - mandatory
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        String st = item.getTitle().toString();
+        if (st.equals("Make a New Order!")){
+            Intent si = new Intent(this, MakeOrder.class);
+            startActivity(si);
+
+        }
+        if (st.equals("Home Screen")){
+            Intent si = new Intent(this, MainActivity.class);
+            startActivity(si);
+
+        }
+
+        if (st.equals("Credits Screen")){
+            Intent si = new Intent(this, CreditsScreen.class);
+            startActivity(si);
+
+        }
+
+        return true;
+    }
+
+
+
 }

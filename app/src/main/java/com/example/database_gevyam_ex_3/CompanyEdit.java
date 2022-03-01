@@ -1,3 +1,12 @@
+
+/**
+ * @author		Yuval Navon <yuvalnavon8@gmail.com>
+ * @version	    1
+ * @since		1/3/2022
+ * This activity is used to to show the full details of a selected company, and edit them.
+ */
+
+
 package com.example.database_gevyam_ex_3;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,6 +15,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,6 +93,16 @@ public class CompanyEdit extends AppCompatActivity {
         secondaryPhone.setVisibility(View.VISIBLE);
     }
 
+
+    /**
+     *  When first pressed - lets the user edit the selected company's details (goes into "EDIT MODE").
+     *  When pressed again - verifies the new info that the user inputted, and if its valid it
+     *  updates the selected company's details (goes into "READ MODE").
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
     public void EditConfirm(View view){
 
         if (edit == 0){
@@ -168,6 +189,16 @@ public class CompanyEdit extends AppCompatActivity {
 
     }
 
+    /**
+     * Resets the EditText to their original state (pre edit by the user) and resets the
+     * edit/confirm Button.
+     * Sets the activity into "READ MODE".
+     * Only visible and usable when in "EDIT MODE".
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
     public void Cancel(View view){
         cancel.setVisibility(View.INVISIBLE);
         cancel.setClickable(false);
@@ -189,12 +220,30 @@ public class CompanyEdit extends AppCompatActivity {
         edit = 0;
     }
 
+    /**
+     * Closes the activity.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
+    public void goBack(View view){
+        finish();
+    }
+
+
+    /**
+     * Checks if the phone number that the user inputted is valid or not.
+     * <p>
+     *
+     * @param phone - the phone number that the user inputted.
+     * @return	true - if the phone is valid, else - false.
+     */
     public static boolean phoneCheck(String phone){
         if (phone.length()!= 10){
             return false;
         }
         String kidomet = phone.substring(0,3);
-        System.out.println(kidomet);
         if (!kidomet.equals("050") && !kidomet.equals("051") && !kidomet.equals("052") && !kidomet.equals("053") && !kidomet.equals("054") && !kidomet.equals("055")
                 && !kidomet.equals("056") && !kidomet.equals("057") && !kidomet.equals("058")){
             return false;
@@ -203,11 +252,14 @@ public class CompanyEdit extends AppCompatActivity {
 
     }
 
-    public void goBack(View view){
-        finish();
-    }
 
-
+    /**
+     * Disables all EditTexts and sets their little lines as invisible.
+     * Used when in "READ MODE".
+     * <p>
+     *
+     * @return	None
+     */
     public void etDisabler(){
         name.setEnabled(false);
         tax.setEnabled(false);
@@ -220,6 +272,13 @@ public class CompanyEdit extends AppCompatActivity {
         secondaryPhone.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Enables all EditTexts and sets their little lines as visible.
+     * Used when in "EDIT MODE".
+     * <p>
+     *
+     * @return	None
+     */
     public void etEnabler(){
         name.setEnabled(true);
         tax.setEnabled(true);
@@ -232,4 +291,45 @@ public class CompanyEdit extends AppCompatActivity {
         secondaryPhone.setVisibility(View.VISIBLE);
     }
 
+
+    /**
+     * Creates the Options Menu, allowing the user to navigate to the Home screen, Credits screen
+     * or the AddWorker activity.
+     * <p>
+     *
+     * @param	menu - the Menu that is created
+     * @return	boolean true - mandatory
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    /**
+     * Starts the MainActivity or CreditsScreen activity according to the
+     * user's choice.
+     * <p>
+     *
+     * @param	item - the MenuItem that is clicked.
+     * @return	boolean true - mandatory
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        String st = item.getTitle().toString();
+
+        if (st.equals("Home Screen")){
+            Intent si = new Intent(this, MainActivity.class);
+            startActivity(si);
+
+        }
+
+        if (st.equals("Credits Screen")){
+            Intent si = new Intent(this, CreditsScreen.class);
+            startActivity(si);
+
+        }
+
+        return true;
+    }
 }

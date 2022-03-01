@@ -1,10 +1,22 @@
+
+/**
+ * @author		Yuval Navon <yuvalnavon8@gmail.com>
+ * @version	    1
+ * @since		1/3/2022
+ * This activity is used to add new workers to the database.
+ */
+
+
 package com.example.database_gevyam_ex_3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,7 +43,13 @@ HelperDB hlp;
 
     }
 
-
+    /**
+     * Saves the inputted information of the new worker, verifies it and if it is valid, it adds the worker to the database.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
     public void Add(View view)
     {
         first_st = first.getText().toString();
@@ -76,6 +94,13 @@ HelperDB hlp;
 
     }
 
+    /**
+     * Clears the EditText fields.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
     public void clear(View view){
         first.setText("");
         last.setText("");
@@ -89,10 +114,25 @@ HelperDB hlp;
         phone_st ="";
     }
 
+    /**
+     * Closes the activity.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
     public void goBack(View view){
         finish();
     }
 
+
+    /**
+     * Checks if the ID number that the user inputted is valid or not.
+     * <p>
+     *
+     * @param ID - the ID number that the user inputted.
+     * @return	true - if the ID is valid, else - false.
+     */
     public static boolean idCheck(String ID){
         if (ID.length()>0 && ID.length()<=9){
 
@@ -130,12 +170,18 @@ HelperDB hlp;
 
     }
 
+    /**
+     * Checks if the phone number that the user inputted is valid or not.
+     * <p>
+     *
+     * @param phone - the phone number that the user inputted.
+     * @return	true - if the phone is valid, else - false.
+     */
     public static boolean phoneCheck(String phone){
         if (phone.length()!= 10){
             return false;
         }
         String kidomet = phone.substring(0,3);
-        System.out.println(kidomet);
         if (!kidomet.equals("050") && !kidomet.equals("051") && !kidomet.equals("052") && !kidomet.equals("053") && !kidomet.equals("054") && !kidomet.equals("055")
                     && !kidomet.equals("056") && !kidomet.equals("057") && !kidomet.equals("058")){
                 return false;
@@ -143,5 +189,53 @@ HelperDB hlp;
         return true;
 
     }
+
+
+    /**
+     * Creates the Options Menu, allowing the user to navigate to the Home screen, Credits screen
+     * or the WorkerDetails activity.
+     * <p>
+     *
+     * @param	menu - the Menu that is created
+     * @return	boolean true - mandatory
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        menu.add(0, 0, 0, "Workers Details");
+        return true;
+    }
+
+    /**
+     * Starts the MainActivity, CreditsScreen activity, or WorkerDetails activity according to the
+     * user's choice.
+     * <p>
+     *
+     * @param	item - the MenuItem that is clicked.
+     * @return	boolean true - mandatory
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        String st = item.getTitle().toString();
+        if (st.equals("Workers Details")){
+            Intent si = new Intent(this, WorkerDetails.class);
+            startActivity(si);
+
+        }
+        if (st.equals("Home Screen")){
+            Intent si = new Intent(this, MainActivity.class);
+            startActivity(si);
+
+        }
+
+        if (st.equals("Credits Screen")){
+            Intent si = new Intent(this, CreditsScreen.class);
+            startActivity(si);
+
+        }
+
+        return true;
+    }
+
 
 }

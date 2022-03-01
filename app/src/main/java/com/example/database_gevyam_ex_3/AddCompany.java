@@ -1,10 +1,22 @@
+
+/**
+ * @author		Yuval Navon <yuvalnavon8@gmail.com>
+ * @version 	1
+ * @since		1/3/2022
+ * This activity is used to add new companies to the database.
+ */
+
+
 package com.example.database_gevyam_ex_3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,6 +39,14 @@ public class AddCompany extends AppCompatActivity {
         hlp = new HelperDB(this);
     }
 
+
+    /**
+     * Saves the inputted information of the new company, verifies it and if it is valid, it adds the company to the database.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
     public void Add(View view)
     {
         name_st = name.getText().toString();
@@ -71,6 +91,46 @@ public class AddCompany extends AppCompatActivity {
 
     }
 
+
+
+    /**
+     * Clears the EditText fields.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
+    public void clear(View view){
+        name.setText("");
+        tax.setText("");
+        main.setText("");
+        secondary.setText("");
+        name_st = "";
+        tax_st = "";
+        main_st = "";
+        secondary_st ="";
+    }
+
+
+    /**
+     * Closes the activity.
+     * <p>
+     *
+     * @param	view - the Button that was clicked on
+     * @return	None
+     */
+    public void goBack(View view){
+        finish();
+    }
+
+
+    /**
+     * Checks if the phone number that the user inputted is valid or not.
+     * <p>
+     *
+     * @param phone - the phone number that the user inputted.
+     * @return	true - if the phone is valid, else - false.
+     */
     public static boolean phoneCheck(String phone){
         if (phone.length()!= 10){
             return false;
@@ -84,20 +144,55 @@ public class AddCompany extends AppCompatActivity {
         return true;
 
     }
-    public void clear(View view){
-        name.setText("");
-        tax.setText("");
-        main.setText("");
-        secondary.setText("");
-        name_st = "";
-        tax_st = "";
-        main_st = "";
-        secondary_st ="";
+
+    /**
+     * Creates the Options Menu, allowing the user to navigate to the Home screen, Credits screen
+     * or the CompanyDetails activity.
+     * <p>
+     *
+     * @param	menu - the Menu that is created
+     * @return	boolean true - mandatory
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        menu.add(0, 0, 0, "Companies Details");
+        return true;
+    }
+
+    /**
+     * Starts the MainActivity, CreditsScreen activity, or CompanyDetails activity according to the
+     * user's choice.
+     * <p>
+     *
+     * @param	item - the MenuItem that is clicked.
+     * @return	boolean true - mandatory
+     */
+    public boolean onOptionsItemSelected(MenuItem item){
+        String st = item.getTitle().toString();
+        if (st.equals("Companies Details")){
+            Intent si = new Intent(this, CompanyDetails.class);
+            startActivity(si);
+
+        }
+        if (st.equals("Home Screen")){
+            Intent si = new Intent(this, MainActivity.class);
+            startActivity(si);
+
+        }
+
+        if (st.equals("Credits Screen")){
+            Intent si = new Intent(this, CreditsScreen.class);
+            startActivity(si);
+
+        }
+
+        return true;
     }
 
 
-    public void goBack(View view){
-        finish();
-    }
+
+
 
 }
