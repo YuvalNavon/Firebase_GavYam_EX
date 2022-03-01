@@ -110,6 +110,8 @@ public class MakeOrder extends AppCompatActivity implements AdapterView.OnItemSe
                 int hour24hrs = calendar.get(Calendar.HOUR_OF_DAY);
                 int minutes = calendar.get(Calendar.MINUTE);
                 String hour = "" + Integer.toString(hour24hrs) + ":" + Integer.toString(minutes);
+                if (minutes<10) hour = "" + Integer.toString(hour24hrs) + ":" + "0" + Integer.toString(minutes);
+
                 String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
 
