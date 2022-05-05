@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.database_gevyam_ex_3">
+    package="com.example.firebase_gavyam_ex">
 
     <application
         android:allowBackup="true"
@@ -10,35 +10,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Database_GevYam_EX_3">
         <activity
-            android:name=".CreditsScreen"
+            android:name="com.example.firebase_gavyam_ex.CreditsScreen"
             android:exported="false" />
         <activity
-            android:name=".OrderHistory"
+            android:name="com.example.firebase_gavyam_ex.OrderHistory"
             android:exported="false" />
         <activity
-            android:name=".MakeOrder"
+            android:name="com.example.firebase_gavyam_ex.MakeOrder"
             android:exported="false" />
         <activity
-            android:name=".CompanyEdit"
+            android:name="com.example.firebase_gavyam_ex.CompanyEdit"
             android:exported="false" />
         <activity
-            android:name=".CompanyDetails"
+            android:name="com.example.firebase_gavyam_ex.CompanyDetails"
             android:exported="false" />
         <activity
-            android:name=".AddCompany"
+            android:name="com.example.firebase_gavyam_ex.AddCompany"
             android:exported="false" />
         <activity
-            android:name=".WorkerEdit"
+            android:name="com.example.firebase_gavyam_ex.WorkerEdit"
             android:exported="false" />
         <activity
-            android:name=".WorkerDetails"
+            android:name="com.example.firebase_gavyam_ex.WorkerDetails"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".AddWorker"
+            android:name="com.example.firebase_gavyam_ex.AddWorker"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.firebase_gavyam_ex.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -2,12 +2,14 @@
 /**
  * @author		Yuval Navon <yuvalnavon8@gmail.com>
  * @version	    1
- * @since		1/3/2022
+ * @since		5/5/2022
  * This activity is used to add new workers to the database.
  */
 
 
-package com.example.database_gevyam_ex_3;
+package com.example.firebase_gavyam_ex;
+
+import static com.example.firebase_gavyam_ex.FBref.refWorkers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,14 +22,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import java.util.regex.*;
 
 public class AddWorker extends AppCompatActivity {
 EditText first, last, id, company, phone;
 String first_st, last_st, id_st, company_st, phone_st;
 SQLiteDatabase db;
 ContentValues cv;
-HelperDB hlp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,6 @@ HelperDB hlp;
         id = (EditText) findViewById(R.id.ID);
         company = (EditText) findViewById(R.id.Company);
         phone = (EditText) findViewById(R.id.PhoneNumber);
-        hlp = new HelperDB(this);
 
 
     }
@@ -67,16 +66,8 @@ HelperDB hlp;
         }
         if (!first_st.isEmpty() && !last_st.isEmpty() && !id_st.isEmpty() && !company_st.isEmpty() && !phone_st.isEmpty() && idCheck(id_st) && phoneCheck(phone_st))
         {
-                cv = new ContentValues();
-                cv.put(Worker.FIRST_NAME, first_st);
-                cv.put(Worker.LAST_NAME, last_st);
-                cv.put(Worker.WORK_COMPANY, company_st);
-                cv.put(Worker.ID_NUMBER, id_st);
-                cv.put(Worker.PHONE_NUMBER, phone_st);
-                cv.put(Worker.WORKER_ACTIVE, "1");
-                db = hlp.getWritableDatabase();
-                db.insert(Worker.TABLE_WORKER, null, cv );
-                db.close();
+                Worker worker = new Worker(first_st, last_st, company_st, id_st, phone_st);
+                refWorkers.child(id_st).setValue(worker);
                 first.setText("");
                 last.setText("");
                 id.setText("");

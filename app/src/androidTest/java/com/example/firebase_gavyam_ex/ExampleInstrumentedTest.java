@@ -1,4 +1,4 @@
-package com.example.database_gevyam_ex_3;
+package com.example.firebase_gavyam_ex;
 
 import android.content.Context;
 

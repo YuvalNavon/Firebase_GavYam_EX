@@ -2,66 +2,69 @@
 /**
  * @author		Yuval Navon <yuvalnavon8@gmail.com>
  * @version	    1
- * @since		1/3/2022
+ * @since		5/5/2022
  * This activity is used to to show the full details of a selected company, and edit them.
  */
 
 
-package com.example.database_gevyam_ex_3;
+package com.example.firebase_gavyam_ex;
+
+import static com.example.firebase_gavyam_ex.FBref.refCompanies;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
-public class CompanyEdit extends AppCompatActivity {
+public class CompanyEdit extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     Button cancel, editconfirm;
     EditText name, tax, mainPhone, secondaryPhone;
     Switch activeSwitch;
 
-    String key_st, name_st, tax_st, mainPhone_st, secondaryPhone_st, active_st, name_st_new, tax_st_new, mainPhone_st_new, secondaryPhone_st_new, active_st_new, active_DB;
-    int edit;
+    String name_st, tax_st, mainPhone_st, secondaryPhone_st, name_st_new, mainPhone_st_new, secondaryPhone_st_new;
+    int edit, active_int;
 
 
     SQLiteDatabase db;
     ContentValues cv;
-    HelperDB hlp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_edit);
 
-        hlp = new HelperDB(this);
 
         activeSwitch = (Switch) findViewById(R.id.activeCompany);
+        activeSwitch.setOnCheckedChangeListener(this);
 
 
         Intent gi = getIntent();
-        key_st = gi.getStringExtra("KEY");
         name_st = gi.getStringExtra("Name");
-        tax_st = gi.getStringExtra("Tax");
+        tax_st = gi.getStringExtra("TaxCompany");
         mainPhone_st = gi.getStringExtra("MainPhone");
         secondaryPhone_st = gi.getStringExtra("SecondaryPhone");
-        active_st = gi.getStringExtra("ActiveNum");
+        active_int = gi.getIntExtra("ActiveNum", 0);
 
-        if (active_st.equals("INACTIVE") ){
-            active_DB = "0";
+        if (active_int==0){
+
             activeSwitch.setChecked(false);
+            activeSwitch.setTextColor(Color.RED);
         }
-        else if (active_st.equals("ACTIVE")) {
-            active_DB = "1";
-            activeSwitch.setChecked(true);
+        else if (active_int == 1) {
 
+            activeSwitch.setChecked(true);
+            activeSwitch.setTextColor(Color.BLUE);
         }
 
         name = (EditText) findViewById(R.id.companyName);
@@ -76,7 +79,7 @@ public class CompanyEdit extends AppCompatActivity {
 
 
 
-
+        tax.setEnabled(false);
 
 
         cancel = (Button) findViewById(R.id.CancelCompany);
@@ -87,10 +90,7 @@ public class CompanyEdit extends AppCompatActivity {
 
         edit = 0;
         etDisabler();
-        name.setVisibility(View.VISIBLE);
-        tax.setVisibility(View.VISIBLE);
-        mainPhone.setVisibility(View.VISIBLE);
-        secondaryPhone.setVisibility(View.VISIBLE);
+
     }
 
 
@@ -122,7 +122,6 @@ public class CompanyEdit extends AppCompatActivity {
         }
         else if (edit == 1){
             name_st_new = name.getText().toString();
-            tax_st_new = tax.getText().toString();
             mainPhone_st_new = mainPhone.getText().toString();
             secondaryPhone_st_new = secondaryPhone.getText().toString();
 
@@ -136,41 +135,22 @@ public class CompanyEdit extends AppCompatActivity {
                 toast.show();
             }
 
-            if (!name_st_new.isEmpty() && !tax_st_new.isEmpty() && !mainPhone_st_new.isEmpty() && !secondaryPhone_st_new.isEmpty()  && phoneCheck(mainPhone_st_new) && phoneCheck(secondaryPhone_st_new))
+            if (!name_st_new.isEmpty() && !mainPhone_st_new.isEmpty() && !secondaryPhone_st_new.isEmpty()  && phoneCheck(mainPhone_st_new) && phoneCheck(secondaryPhone_st_new))
                 {
-                    db = hlp.getWritableDatabase();
-                    cv = new ContentValues();
-                    cv.put(Company.NAME, name_st_new);
-                    cv.put(Company.TAX_COMPANY, tax_st_new);
-                    cv.put(Company.MAIN_NUMBER, mainPhone_st_new);
-                    cv.put(Company.SECONDARY_NUMBER, secondaryPhone_st_new);
 
-                    if (activeSwitch.isChecked()) {
-                        active_DB = "1";
-                        active_st_new = "ACTIVE";
-                    }
-                    else {
-                        active_DB = "0";
-                        active_st_new = "INACTIVE";
-                    }
+                    if (activeSwitch.isChecked()) active_int = 1;
+                    else active_int = 0;
 
+                    Company comp = new Company(name_st_new, tax_st, mainPhone_st_new, secondaryPhone_st_new, active_int);
+                    refCompanies.child(tax_st).setValue(comp);
 
-                    cv.put(Company.COMPANY_ACTIVE, active_DB);
-                    db.update(Company.TABLE_COMPANY, cv, Company.COMPANY_ID+"=?", new String[]{key_st});
-
-
-
-                    db.close();
 
                     cancel.setVisibility(View.INVISIBLE);
                     cancel.setClickable(false);
                     editconfirm.setText("EDIT");
 
                     etDisabler();
-                    name.setVisibility(View.VISIBLE);
-                    tax.setVisibility(View.VISIBLE);
-                    mainPhone.setVisibility(View.VISIBLE);
-                    secondaryPhone.setVisibility(View.VISIBLE);
+
 
                     edit = 0;
                     Toast toast = Toast.makeText(getApplicationContext(), "Changes saved successfully", Toast.LENGTH_LONG);
@@ -210,10 +190,7 @@ public class CompanyEdit extends AppCompatActivity {
         secondaryPhone.setText(secondaryPhone_st);
 
         etDisabler();
-        name.setVisibility(View.VISIBLE);
-        tax.setVisibility(View.VISIBLE);
-        mainPhone.setVisibility(View.VISIBLE);
-        secondaryPhone.setVisibility(View.VISIBLE);
+
 
 
 
@@ -262,14 +239,10 @@ public class CompanyEdit extends AppCompatActivity {
      */
     public void etDisabler(){
         name.setEnabled(false);
-        tax.setEnabled(false);
         mainPhone.setEnabled(false);
         secondaryPhone.setEnabled(false);
         activeSwitch.setEnabled(false);
-        name.setVisibility(View.INVISIBLE);
-        tax.setVisibility(View.INVISIBLE);
-        mainPhone.setVisibility(View.INVISIBLE);
-        secondaryPhone.setVisibility(View.INVISIBLE);
+
     }
 
     /**
@@ -281,16 +254,24 @@ public class CompanyEdit extends AppCompatActivity {
      */
     public void etEnabler(){
         name.setEnabled(true);
-        tax.setEnabled(true);
         mainPhone.setEnabled(true);
         secondaryPhone.setEnabled(true);
         activeSwitch.setEnabled(true);
-        name.setVisibility(View.VISIBLE);
-        tax.setVisibility(View.VISIBLE);
-        mainPhone.setVisibility(View.VISIBLE);
-        secondaryPhone.setVisibility(View.VISIBLE);
+
     }
 
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if (b) {
+            activeSwitch.setText("ACTIVE");
+            activeSwitch.setTextColor(Color.BLUE);
+        }
+        else {
+            activeSwitch.setText("INACTIVE");
+            activeSwitch.setTextColor(Color.RED);
+        }
+    }
 
     /**
      * Creates the Options Menu, allowing the user to navigate to the Home screen, Credits screen
@@ -332,4 +313,6 @@ public class CompanyEdit extends AppCompatActivity {
 
         return true;
     }
+
+
 }

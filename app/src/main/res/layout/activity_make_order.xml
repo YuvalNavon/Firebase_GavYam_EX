@@ -41,13 +41,13 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/cardID"
+                android:id="@+id/workerID"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="Card ID"
+                android:hint="Worker ID"
                 android:inputType="number" />
 
             <Space

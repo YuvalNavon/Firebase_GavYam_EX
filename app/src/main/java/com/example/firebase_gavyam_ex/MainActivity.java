@@ -2,17 +2,16 @@
 /**
  * @author		Yuval Navon <yuvalnavon8@gmail.com>
  * @version 	1
- * @since		1/3/2022
+ * @since		5/5/2022
  * The home menu for the GYNBus Manager app.
  */
 
 
-package com.example.database_gevyam_ex_3;
+package com.example.firebase_gavyam_ex;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;

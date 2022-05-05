@@ -2,21 +2,21 @@
 /**
  * @author		Yuval Navon <yuvalnavon8@gmail.com>
  * @version	    1
- * @since		1/3/2022
+ * @since		5/5/2022
  * This activity is used to show the main details of all workers, and allows the user to edit each
  * worker by clicking on them.
  */
 
 
-package com.example.database_gevyam_ex_3;
+package com.example.firebase_gavyam_ex;
+
+import static com.example.firebase_gavyam_ex.FBref.refWorkers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +25,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import java.util.*;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -32,37 +38,38 @@ public class WorkerDetails extends AppCompatActivity implements AdapterView.OnIt
 
 
 
-String first_st, last_st, id_st, company_st, phone_st, active_st, active_DB;
-int key;
-boolean revOrder, curr_reversed, AtoZ, ZtoA, onlyActive, onlyInactive;
+String  active_st;
+
+boolean revOrder, workerAtoZ, workerZtoA,  companyAtoZ, companyZtoA, onlyActive, onlyInactive;
 
 Spinner spin;
-String [] sorts, listofFilters,selectionArgs;
+String [] sorts, listofFilters;
 
 
 AlertDialog.Builder adbFilter;
 AlertDialog adFilter;
 
-SQLiteDatabase db;
-HelperDB hlp;
-Cursor crsr;
 
 ListView listofWorkers;
-ArrayList<String> tbl, tbl2;
-ArrayList<String[]> tblfull;
+ArrayList<String> workList;
+ArrayList<Worker> workValues;
 ArrayAdapter adp;
+
+ValueEventListener workListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worker_details);
 
-        AtoZ = false;
-        ZtoA = false;
+        workerAtoZ = true;
+        workerZtoA = false;
+
+        companyAtoZ = false;
+        companyZtoA = false;
+
         onlyActive = false;
         onlyInactive = false;
-
-        hlp = new HelperDB(this);
 
 
 
@@ -70,7 +77,7 @@ ArrayAdapter adp;
         listofWorkers.setOnItemClickListener(this);
         listofWorkers.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        sorts = new String[]{"First added","Last added","Last name: A-Z","Last name: Z-A"};
+        sorts = new String[]{"Last name: A-Z","Last name: Z-A", "Company: A-Z", "Company: Z-A"};
         spin = (Spinner) findViewById(R.id.sortSpinnerWorker);
         spin.setOnItemSelectedListener(this);
         ArrayAdapter<String> adp = new ArrayAdapter<String>(this,
@@ -85,38 +92,34 @@ ArrayAdapter adp;
         adbFilter.setItems(listofFilters, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String selection = null;
                 if (i == 0){
-                    selection = Worker.WORKER_ACTIVE + "=?";
-                    selectionArgs = new String[]{"1"};
-                    onlyActive = true;
-                    onlyInactive = false;
+                   onlyActive = true;
+                   onlyInactive = false;
 
                 }
                 if (i == 1){
-                    selection = Worker.WORKER_ACTIVE + "=?";
-                    selectionArgs = new String[]{"0"};
-
                     onlyActive = false;
                     onlyInactive = true;
 
                 }
                 if (i == 2){
-                    selection =null;
-                    selectionArgs = null;
-
                     onlyActive = false;
                     onlyInactive = false;
 
                 }
-                db=hlp.getReadableDatabase();
-                crsr = db.query(Worker.TABLE_WORKER, null, selection, selectionArgs, null,null, null, null);
-                if (AtoZ)  crsr = db.query(Worker.TABLE_WORKER, null, Worker.WORKER_ACTIVE+ "=?", selectionArgs, null,null, Worker.LAST_NAME, null);
-                else if (ZtoA) crsr = db.query(Worker.TABLE_WORKER, null, Worker.WORKER_ACTIVE+ "=?", selectionArgs, null,null, Worker.LAST_NAME + " DESC", null);
-                else  if (curr_reversed) revOrder = true;
-                Reader(crsr);
-                crsr.close();
-                db.close();
+
+                Query querer;
+
+                querer = refWorkers.orderByChild("lastName");
+                if (companyAtoZ) querer = refWorkers.orderByChild("workCompany");
+                Reader(querer);
+
+                if (revOrder){
+                    Collections.reverse(workList);
+                    Collections.reverse(workValues);
+                    ArrayAdapter<String> adp = new ArrayAdapter<String>(WorkerDetails.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, workList);
+                    listofWorkers.setAdapter(adp);
+                }
 
 
             }
@@ -132,9 +135,17 @@ ArrayAdapter adp;
         adFilter = adbFilter.create();
 
         revOrder = false;
-        curr_reversed = false;
 
 
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (workListener!=null) {
+            refWorkers.removeEventListener(workListener);
+        }
 
     }
 
@@ -142,11 +153,8 @@ ArrayAdapter adp;
     protected void onResume() {
         super.onResume();
         spin.setSelection(0);
-        db=hlp.getReadableDatabase();
-        crsr = db.query(Worker.TABLE_WORKER, null, null, null, null, null, null, null);
-        Reader(crsr);
-        crsr.close();
-        db.close();
+        Query querer = refWorkers.orderByChild("lastName");
+        Reader(querer);
 
     }
 
@@ -175,65 +183,77 @@ ArrayAdapter adp;
     }
 
 
-    /**
-     * Makes a global ArrayList that contains all of the workers in reverse order (last added come first).
-     * <p>
-     *
-     * @return	tbl2 - ArrayList<String> of all workers in reverse order.
-     */
-    public ArrayList<String> reverse_tbl(){
-        tbl2 = new ArrayList<>();
-        for (int i = tbl.size()-1; i>=0; i--){
-            tbl2.add(tbl.get(i));
-        }
-        return tbl2;
-    }
+
 
     /**
-     * Reads the Worker database and saves each worker's full information in a global
-     * ArrayList<String[]> called tblfull. the information that is presented to the user is saved in
-     * a global ArrayList<String> tbl.
+     * Reads the Worker tree and saves each worker's full information in a global
+     * ArrayList<Worker> called workerValues. the information that is presented to the user is saved in
+     * a global ArrayList<String> workList.
      * <p>
      *
-     * @param	cursr - the cursor that was made for the reading of the database
+     * @param  quer - the Query that was selected.
      * @return	None
      */
-    public void Reader(Cursor cursr){
-        db=hlp.getWritableDatabase();
-        tbl = new ArrayList<>();
-        tblfull = new ArrayList<>();
-        int col_key = cursr.getColumnIndex(Worker.KEY_NUMBER);
-        int col_first = cursr.getColumnIndex(Worker.FIRST_NAME);
-        int col_last = cursr.getColumnIndex(Worker.LAST_NAME);
-        int col_id = cursr.getColumnIndex(Worker.ID_NUMBER);
-        int col_company = cursr.getColumnIndex(Worker.WORK_COMPANY);
-        int col_phone = cursr.getColumnIndex(Worker.PHONE_NUMBER);
-        int col_active = cursr.getColumnIndex(Worker.WORKER_ACTIVE);
-        cursr.moveToFirst();
-        while (!cursr.isAfterLast()){
-            key = cursr.getInt(col_key);
-            first_st = cursr.getString(col_first);
-            last_st = cursr.getString(col_last);
-            id_st = cursr.getString(col_id);
-            company_st = cursr.getString(col_company);
-            phone_st = cursr.getString(col_phone);
-            active_DB = cursr.getString(col_active);
-            if (active_DB.equals("0")) active_st = "INACTIVE";
-            else active_st = "ACTIVE";
-            String tmp = "" + key + ": " + first_st + ", " + last_st + ", " + company_st + ", " + active_st;
-            String[] tmp2 = new String[]{String.valueOf(key), first_st, last_st, id_st, company_st, phone_st, active_st} ;
-            tbl.add(tmp);
-            tblfull.add(tmp2);
-            cursr.moveToNext();
-        }
-        cursr.close();
-        db.close();
+    public void Reader(Query quer){
+        workList = new ArrayList<>();
+        workValues = new ArrayList<>();
+        workListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dS) {
+                workList.clear();
+                workValues.clear();
+                for(DataSnapshot data : dS.getChildren()) {
 
-        if (revOrder) tbl = reverse_tbl();
-        adp = new ArrayAdapter<String>(
-                this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, tbl);
-        listofWorkers.setAdapter(adp);
-        revOrder = false;
+                    Worker workTmp = data.getValue(Worker.class);
+
+                    int Active_num = workTmp.getWorkerActive();
+                    if (onlyActive){
+                        if (Active_num == 1){
+                            active_st = "ACTIVE";
+                            String ID = (String) data.getKey();
+                            String Last = workTmp.getLastName();
+                            String Company = workTmp.getWorkCompany();
+                            workList.add(ID+": "+ Last + ", " + Company + ", " + active_st );
+                            workValues.add(workTmp);
+                        }
+                    }
+                    else if (onlyInactive){
+                        if (Active_num == 0){
+                            active_st = "INACTIVE";
+                            String ID = (String) data.getKey();
+                            String Last = workTmp.getLastName();
+                            String Company = workTmp.getWorkCompany();
+                            workList.add(ID+": "+ Last + ", " + Company + ", " + active_st );
+                            workValues.add(workTmp);
+                        }
+                    }
+                    else{
+                        if (Active_num == 0) active_st = "INACTIVE";
+                        else  active_st = "ACTIVE";
+                        String ID = (String) data.getKey();
+                        String Last = workTmp.getLastName();
+                        String Company = workTmp.getWorkCompany();
+                        workList.add(ID+": "+ Last + ", " + Company + ", " + active_st );
+                        workValues.add(workTmp);
+                    }
+
+                }
+                if (revOrder){
+                    Collections.reverse(workList);
+                    Collections.reverse(workValues);
+                }
+                adp = new ArrayAdapter<String>(WorkerDetails.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, workList);
+                listofWorkers.setAdapter(adp);
+
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        };
+        quer.addValueEventListener(workListener);
+
+
+
 
 
 
@@ -253,18 +273,17 @@ ArrayAdapter adp;
      */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        String[] workerDetails;
-        if (!curr_reversed) workerDetails = tblfull.get(i);
-        else  workerDetails = tblfull.get(tblfull.size()-1-i);
+        Worker workerDetails;
+        workerDetails = workValues.get(i);
+
 
         Intent si = new Intent(this, WorkerEdit.class);
-        si.putExtra("KEY", workerDetails[0]);
-        si.putExtra("First", workerDetails[1]);
-        si.putExtra("Last", workerDetails[2]);
-        si.putExtra("ID", workerDetails[3]);
-        si.putExtra("Company", workerDetails[4]);
-        si.putExtra("Phone", workerDetails[5]);
-        si.putExtra("ActiveNum", workerDetails[6]);
+        si.putExtra("First", workerDetails.getFirstName());
+        si.putExtra("Last", workerDetails.getLastName());
+        si.putExtra("ID", workerDetails.getIdNumber());
+        si.putExtra("Company", workerDetails.getWorkCompany());
+        si.putExtra("Phone", workerDetails.getPhoneNumber());
+        si.putExtra("ActiveNum", workerDetails.getWorkerActive());
         startActivity(si);
 
 
@@ -289,43 +308,36 @@ ArrayAdapter adp;
      */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String[] columns = null;
-        String groupBy  = null;
-        String having  = null;
-        String orderBy = null;
-        String limit  = null;
-
+        Query querer;
         if (i==0){
-            AtoZ = false;
-            ZtoA = false;
-            curr_reversed = false;
+            workerAtoZ = true;
+            companyAtoZ = false;
+            revOrder = false;
+            querer = refWorkers.orderByChild("lastName");
+
         }
 
         else if (i==1){
             revOrder = true;
-            curr_reversed = true;
-            AtoZ = false;
-            ZtoA = false;
+            querer = refWorkers.orderByChild("lastName");
 
         }
 
         else if (i==2){
-            orderBy = Worker.LAST_NAME;
-            AtoZ = true;
-            ZtoA = false;
+            companyAtoZ = true;
+            workerAtoZ = false;
+            revOrder = false;
+            querer = refWorkers.orderByChild("workCompany");
 
         }
-        else if (i==3){
-            orderBy = Worker.LAST_NAME + " DESC";
-            ZtoA = true;
-            AtoZ = false;
+        else{
+            revOrder = true;
+            querer = refWorkers.orderByChild("workCompany");
+
+
         }
-        db=hlp.getReadableDatabase();
-        if (onlyActive || onlyInactive) crsr = db.query(Worker.TABLE_WORKER, columns, Worker.WORKER_ACTIVE+ "=?", selectionArgs, groupBy, having, orderBy, limit);
-        else crsr = db.query(Worker.TABLE_WORKER, columns, null, null, groupBy, having, orderBy, limit);
-        Reader(crsr);
-        crsr.close();
-        db.close();
+        Reader(querer);
+
     }
 
     /**

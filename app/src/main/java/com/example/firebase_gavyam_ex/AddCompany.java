@@ -2,12 +2,14 @@
 /**
  * @author		Yuval Navon <yuvalnavon8@gmail.com>
  * @version 	1
- * @since		1/3/2022
+ * @since		5/5/2022
  * This activity is used to add new companies to the database.
  */
 
 
-package com.example.database_gevyam_ex_3;
+package com.example.firebase_gavyam_ex;
+
+import static com.example.firebase_gavyam_ex.FBref.refCompanies;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,7 +28,7 @@ public class AddCompany extends AppCompatActivity {
     String name_st, tax_st, main_st, secondary_st;
     SQLiteDatabase db;
     ContentValues cv;
-    HelperDB hlp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,7 @@ public class AddCompany extends AppCompatActivity {
         tax = (EditText) findViewById(R.id.TaxCompany);
         main = (EditText) findViewById(R.id.MainNumber);
         secondary = (EditText) findViewById(R.id.SecondaryNumber);
-        hlp = new HelperDB(this);
+
     }
 
 
@@ -64,17 +66,8 @@ public class AddCompany extends AppCompatActivity {
         }
         if (!name_st.isEmpty() && !tax_st.isEmpty() && !main_st.isEmpty() && !secondary_st.isEmpty() && phoneCheck(main_st) && phoneCheck(secondary_st))
             {
-                cv = new ContentValues();
-                cv.put(Company.NAME, name_st);
-                cv.put(Company.TAX_COMPANY, tax_st);
-                cv.put(Company.MAIN_NUMBER, main_st);
-                cv.put(Company.SECONDARY_NUMBER, secondary_st);
-                cv.put(Company.COMPANY_ACTIVE, "1");
-
-
-                db = hlp.getWritableDatabase();
-                db.insert(Company.TABLE_COMPANY, null, cv );
-                db.close();
+                Company comp = new Company(name_st, tax_st, main_st, secondary_st);
+                refCompanies.child(tax_st).setValue(comp);
                 name.setText("");
                 tax.setText("");
                 main.setText("");

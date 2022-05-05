@@ -1,4 +1,12 @@
-package com.example.database_gevyam_ex_3;
+/**
+ * @author		Yuval Navon <yuvalnavon8@gmail.com>
+ * @version	    1
+ * @since		5/5/2022
+ * This activity is used for the CreditsScreen activity.
+ */
+
+
+package com.example.firebase_gavyam_ex;
 
 import androidx.appcompat.app.AppCompatActivity;
 
