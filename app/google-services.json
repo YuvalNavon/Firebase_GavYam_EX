@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "333627091462",
+    "firebase_url": "https://fir-gavyam-e679b-default-rtdb.firebaseio.com",
+    "project_id": "fir-gavyam-e679b",
+    "storage_bucket": "fir-gavyam-e679b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333627091462:android:7d0d9c27bd0154ca037187",
+        "android_client_info": {
+          "package_name": "com.example.firebase_gavyam_ex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333627091462-ibsenqkaolklce5eqd3m23a2eqif47e7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlyoU2PowkPOnypQF0avTN6t4e_a_3xUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333627091462-ibsenqkaolklce5eqd3m23a2eqif47e7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
